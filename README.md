@@ -23,7 +23,7 @@ Internship_Project_Nexaprime/
 │   ├── app/
 │   │   ├── main.py          ← Entry point
 │   │   ├── config.py        ← Environment variable loading
-│   │   ├── database.py      ← SQLAlchemy + SQLite setup
+│   │   ├── database.py      ← Motor + Beanie MongoDB setup
 │   │   ├── models.py        ← Database models
 │   │   ├── schemas.py       ← Pydantic request/response models
 │   │   ├── products.py      ← Product catalogue data
@@ -57,7 +57,7 @@ Internship_Project_Nexaprime/
 |------------|---------------------------------|
 | Frontend   | React 18, Vite, Tailwind CSS    |
 | Backend    | Python 3.10+, FastAPI, Uvicorn  |
-| Database   | SQLite via SQLAlchemy ORM       |
+| Database   | MongoDB via Motor and Beanie    |
 | AI         | Google Gemini API (google-genai)|
 | HTTP       | Axios (frontend → backend)      |
 
@@ -69,7 +69,8 @@ Before starting, install these on your computer:
 
 1. **Node.js** (v18 or later) — https://nodejs.org/
 2. **Python** (v3.10 or later) — https://www.python.org/downloads/
-3. **Git** — https://git-scm.com/
+3. **MongoDB** (local server or MongoDB Atlas) — https://www.mongodb.com/try/download/community
+4. **Git** — https://git-scm.com/
 
 Verify they are installed by opening PowerShell and running:
 ```powershell
@@ -134,6 +135,23 @@ uvicorn app.main:app --reload --port 8000
 The backend will be available at: http://localhost:8000
 API documentation (Swagger UI): http://localhost:8000/docs
 
+### Configure user and admin access
+
+Copy `backend/.env.example` to `backend/.env` and configure `MONGODB_URI` and
+`DB_NAME` for your MongoDB database. Before starting the backend for the first
+time, set `ADMIN_USERNAME` and `ADMIN_PASSWORD` in `backend/.env`; the backend
+creates that admin account in MongoDB if no admin account exists yet. Use a
+strong password of at least 8 characters. Set `JWT_SECRET` to a long random
+value as well. If an admin account already exists, set `ADMIN_USERNAME` to
+that existing admin's username to synchronize its password from the environment.
+
+Users can create an account from the login page or sign in with an existing
+account. After login, users can submit quotation requests and see only their
+own requests and their review status. Admins can open **Admin Panel** to see
+all pending quotation requests, review the request details, approve or reject
+them, add comments, and inspect activity logs. User registrations, successful
+logins, quotation submissions, and admin decisions are recorded in MongoDB.
+
 ### Terminal 2 — Frontend
 
 ```powershell
@@ -158,8 +176,8 @@ The frontend will be available at: http://localhost:5173
 3. Click **"Chat with AI"** to open the chatbot
 4. Type a message like: *"Hello, tell me about your products"*
 5. Try switching to Hindi: *"नमस्ते, आपके उत्पाद बताइए"*
-6. Use **"Get Quote"** to submit a quotation request
-7. View saved quotations in the **"Quotations"** section
+6. Create a user account or sign in, then use **"Get Quote"** to submit a request
+7. Sign in as the configured admin to approve/reject pending requests in **Admin Panel**
 
 ---
 

@@ -1,0 +1,14 @@
+# ========================
+# SECRETS — NEVER COMMIT
+# ========================
+.env
+*.env
+
+# Python
+venv/
+__pycache__/
+**/__pycache__/
+**/*.pyc
+*.db
+*.sqlite
+*.sqlite3
