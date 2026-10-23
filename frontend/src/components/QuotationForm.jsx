@@ -1,6 +1,6 @@
 // QuotationForm.jsx — Customer quotation request form
-import { useState } from 'react'
-import { quotationsApi } from '../api'
+import { useEffect, useState } from 'react'
+import { productsApi, quotationsApi } from '../api'
 
 const STATUS_STEPS = ['Fill Form', 'Review', 'Submitted']
 
@@ -10,6 +10,9 @@ export default function QuotationForm({ prefilledProduct, onSuccess, onCancel })
   const [error, setError] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [quotationId, setQuotationId] = useState(null)
+  const [recommendationLoading, setRecommendationLoading] = useState(false)
+  const [recommendationError, setRecommendationError] = useState('')
+  const [recommendationMessage, setRecommendationMessage] = useState('')
 
   const [form, setForm] = useState({
     customer_name: '',
@@ -25,17 +28,74 @@ export default function QuotationForm({ prefilledProduct, onSuccess, onCancel })
     additional_requirements: '',
     recommended_product: prefilledProduct?.name || '',
     notes: '',
-<<<<<<< HEAD
     quantity: '1',
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
   })
 
   const [errors, setErrors] = useState({})
 
+  useEffect(() => {
+    if (step !== 1 || prefilledProduct?.name) return
+
+    const payload = {
+      application: form.application.trim() || undefined,
+      viscosity_cp: form.viscosity_cp && Number.isFinite(Number(form.viscosity_cp))
+        ? Number(form.viscosity_cp) : undefined,
+      flow_rate_ml_min: form.flow_rate_ml_min && Number.isFinite(Number(form.flow_rate_ml_min))
+        ? Number(form.flow_rate_ml_min) : undefined,
+      droplet_size_um: form.droplet_size_um && Number.isFinite(Number(form.droplet_size_um))
+        ? Number(form.droplet_size_um) : undefined,
+      frequency_khz: form.frequency_khz && Number.isFinite(Number(form.frequency_khz))
+        ? Number(form.frequency_khz) : undefined,
+    }
+    if (!Object.values(payload).some(value => value !== undefined)) return
+
+    let isCurrentRequest = true
+    const timeout = setTimeout(async () => {
+      setRecommendationLoading(true)
+      setRecommendationError('')
+      setRecommendationMessage('')
+      try {
+        const response = await productsApi.recommend(payload)
+        if (!isCurrentRequest) return
+
+        const recommendedProduct = response.data.products[0]?.name || ''
+        setForm(current => ({ ...current, recommended_product: recommendedProduct }))
+        setRecommendationMessage(
+          recommendedProduct ? '' : response.data.explanation
+        )
+      } catch (error) {
+        if (isCurrentRequest) {
+          setRecommendationError(
+            error.response?.data?.detail || 'Could not get a product recommendation. Please try again.'
+          )
+        }
+      } finally {
+        if (isCurrentRequest) setRecommendationLoading(false)
+      }
+    }, 350)
+
+    return () => {
+      isCurrentRequest = false
+      clearTimeout(timeout)
+    }
+  }, [
+    step,
+    prefilledProduct?.name,
+    form.application,
+    form.viscosity_cp,
+    form.flow_rate_ml_min,
+    form.droplet_size_um,
+    form.frequency_khz,
+  ])
+
   const update = (field, value) => {
     setForm(f => ({ ...f, [field]: value }))
     setErrors(e => ({ ...e, [field]: '' }))
+    if (['application', 'viscosity_cp', 'flow_rate_ml_min', 'droplet_size_um', 'frequency_khz'].includes(field)) {
+      setRecommendationLoading(false)
+      setRecommendationError('')
+      setRecommendationMessage('')
+    }
   }
 
   // Determine if required fields are filled and valid
@@ -43,10 +103,7 @@ export default function QuotationForm({ prefilledProduct, onSuccess, onCancel })
     // Required: customer_name and a valid email
     if (!form.customer_name?.trim()) return false
     if (!form.email?.trim() || !/\S+@\S+\.\S+/.test(form.email)) return false
-<<<<<<< HEAD
     if (!Number.isInteger(Number(form.quantity)) || Number(form.quantity) < 1) return false
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
     return true
   }
 
@@ -57,12 +114,9 @@ export default function QuotationForm({ prefilledProduct, onSuccess, onCancel })
       if (!form.email.trim()) errs.email = 'Email is required'
       else if (!/\S+@\S+\.\S+/.test(form.email)) errs.email = 'Enter a valid email'
     }
-<<<<<<< HEAD
     if (step === 1 && (!Number.isInteger(Number(form.quantity)) || Number(form.quantity) < 1)) {
       errs.quantity = 'Enter a whole quantity of at least 1.'
     }
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
     setErrors(errs)
     return Object.keys(errs).length === 0
   }
@@ -81,15 +135,12 @@ export default function QuotationForm({ prefilledProduct, onSuccess, onCancel })
     setError('')
     try {
       const payload = { ...form }
-<<<<<<< HEAD
       payload.quantity = Number.parseInt(form.quantity, 10)
       if (!Number.isInteger(payload.quantity) || payload.quantity < 1) {
         setErrors(current => ({ ...current, quantity: 'Enter a whole quantity of at least 1.' }))
         setLoading(false)
         return
       }
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
       // Convert numeric strings to numbers or null
       ;['viscosity_cp', 'flow_rate_ml_min', 'droplet_size_um', 'frequency_khz'].forEach(k => {
         payload[k] = form[k] ? parseFloat(form[k]) : null
@@ -180,11 +231,7 @@ export default function QuotationForm({ prefilledProduct, onSuccess, onCancel })
       {step === 1 && (
         <div className="fade-in">
           <h3 style={styles.sectionTitle}>Application Requirements</h3>
-<<<<<<< HEAD
           <Field label="Industry / Application / Use Case">
-=======
-          <Field label="Application / Use Case">
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
             <input className="form-input" placeholder="e.g. Spray drying, fuel cell coating…" value={form.application}
               onChange={e => update('application', e.target.value)} />
           </Field>
@@ -214,15 +261,20 @@ export default function QuotationForm({ prefilledProduct, onSuccess, onCancel })
             <input className="form-input" value={form.recommended_product}
               onChange={e => update('recommended_product', e.target.value)} />
           </Field>
-<<<<<<< HEAD
+          {recommendationLoading && (
+            <div style={{ color: '#94a3b8', fontSize: '0.8rem' }}>Finding a suitable product…</div>
+          )}
+          {recommendationError && (
+            <div className="alert alert-error" role="status">{recommendationError}</div>
+          )}
+          {recommendationMessage && (
+            <div className="alert alert-warning" role="status">{recommendationMessage}</div>
+          )}
           <Field label="Requested Quantity *" error={errors.quantity}>
             <input className="form-input" type="number" min="1" step="1" value={form.quantity}
               onChange={e => update('quantity', e.target.value)} />
           </Field>
           <Field label="Additional Requirements (include a preferred callback time if you want a call)">
-=======
-          <Field label="Additional Requirements">
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
             <textarea className="form-textarea" rows={3} placeholder="Any special requirements…" value={form.additional_requirements}
               onChange={e => update('additional_requirements', e.target.value)} />
           </Field>
@@ -249,10 +301,7 @@ export default function QuotationForm({ prefilledProduct, onSuccess, onCancel })
             <ReviewRow label="Droplet Size" value={form.droplet_size_um ? `${form.droplet_size_um} µm` : '—'} />
             <ReviewRow label="Frequency" value={form.frequency_khz ? `${form.frequency_khz} kHz` : '—'} />
             <ReviewRow label="Recommended Product" value={form.recommended_product} />
-<<<<<<< HEAD
             <ReviewRow label="Requested Quantity" value={form.quantity} />
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
             <ReviewRow label="Additional Notes" value={form.additional_requirements} />
           </div>
           <div className="alert alert-warning" style={{ marginTop: 12, fontSize: '0.8rem' }}>

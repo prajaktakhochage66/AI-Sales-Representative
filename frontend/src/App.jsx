@@ -16,15 +16,12 @@ export default function App() {
 
   // Check stored auth on mount
   useEffect(() => {
-<<<<<<< HEAD
     const handleUnauthorized = () => {
       setUser(null)
       setPage('login')
     }
     window.addEventListener('wavenxd:unauthorized', handleUnauthorized)
 
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
     const token = getToken()
     const storedUser = getStoredUser()
     if (token && storedUser) {
@@ -45,11 +42,8 @@ export default function App() {
     } else {
       setAuthChecked(true)
     }
-<<<<<<< HEAD
 
     return () => window.removeEventListener('wavenxd:unauthorized', handleUnauthorized)
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
   }, [])
 
   const navigate = (p) => {

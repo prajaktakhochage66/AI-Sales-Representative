@@ -25,6 +25,7 @@ from app.models import QuotationRequest
 
 CENT = Decimal("0.01")
 INDIAN_STANDARD_TIME = timezone(timedelta(hours=5, minutes=30))
+PAYMENT_TERMS = "50% advance payment and 50% before dispatch, subject to company approval."
 
 
 class QuotationEmailDeliveryError(Exception):

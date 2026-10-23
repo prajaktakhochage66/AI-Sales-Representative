@@ -1,12 +1,9 @@
 // pages/AdminPage.jsx — Admin dashboard for managing quotations
 import { useState, useEffect } from 'react'
-<<<<<<< HEAD
 import { adminApi, followupsApi } from '../api'
-=======
-import { adminApi } from '../api'
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
 const STATUS_FILTERS = ['All', 'Pending', 'Approved', 'Rejected', 'In Review', 'Quoted', 'Closed']
+const PAYMENT_TERMS = '50% advance payment and 50% before dispatch, subject to company approval.'
 
 const STATUS_COLORS = {
   Pending: { bg: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b', border: 'rgba(245,158,11,0.25)' },
@@ -33,7 +30,6 @@ function StatusBadge({ status }) {
 
 function formatDate(dateStr) {
   if (!dateStr) return '—'
-<<<<<<< HEAD
   const timestamp = /(?:Z|[+-]\d{2}:\d{2})$/i.test(dateStr) ? dateStr : `${dateStr}Z`
   return new Date(timestamp).toLocaleString('en-IN', {
     day: 'numeric', month: 'short', year: 'numeric',
@@ -47,14 +43,6 @@ function istDateTimeToIso(dateTime) {
   return new Date(`${dateTime}:00+05:30`).toISOString()
 }
 
-=======
-  return new Date(dateStr).toLocaleDateString('en-IN', {
-    day: 'numeric', month: 'short', year: 'numeric',
-    hour: '2-digit', minute: '2-digit',
-  })
-}
-
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 export default function AdminPage({ user }) {
   const [dashboard, setDashboard] = useState(null)
   const [quotations, setQuotations] = useState([])
@@ -64,7 +52,6 @@ export default function AdminPage({ user }) {
   const [error, setError] = useState('')
   const [actionLoading, setActionLoading] = useState(false)
   const [comments, setComments] = useState('')
-<<<<<<< HEAD
   const [quoteForm, setQuoteForm] = useState({
     quotation_product: '',
     unit_price: '',
@@ -73,15 +60,12 @@ export default function AdminPage({ user }) {
     customization_charge: '0',
     currency: 'INR',
     validity_days: '30',
-    payment_terms: '',
+    payment_terms: PAYMENT_TERMS,
   })
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
   const [actionSuccess, setActionSuccess] = useState('')
   const [showLogs, setShowLogs] = useState(false)
   const [activityLogs, setActivityLogs] = useState([])
   const [logsLoading, setLogsLoading] = useState(false)
-<<<<<<< HEAD
   const [followUps, setFollowUps] = useState([])
   const [followUpsLoading, setFollowUpsLoading] = useState(false)
   const [followUpDate, setFollowUpDate] = useState('')
@@ -91,8 +75,6 @@ export default function AdminPage({ user }) {
   const [scheduledCalls, setScheduledCalls] = useState([])
   const [scheduledCallsLoading, setScheduledCallsLoading] = useState(false)
   const [scheduledCallsError, setScheduledCallsError] = useState('')
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
   const loadDashboard = async () => {
     try {
@@ -133,7 +115,6 @@ export default function AdminPage({ user }) {
     }
   }
 
-<<<<<<< HEAD
   const loadFollowUps = async (quotationId) => {
     setFollowUpsLoading(true)
     try {
@@ -163,11 +144,6 @@ export default function AdminPage({ user }) {
     loadDashboard()
     loadQuotations(activeFilter)
     loadScheduledCalls()
-=======
-  useEffect(() => {
-    loadDashboard()
-    loadQuotations(activeFilter)
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
   }, [])
 
   const handleFilterChange = (filter) => {
@@ -178,7 +154,6 @@ export default function AdminPage({ user }) {
     loadQuotations(filter)
   }
 
-<<<<<<< HEAD
   const handleScheduleFollowUp = async () => {
     if (!followUpDate) {
       setFollowUpMessage('Choose a date and time for the follow-up call.')
@@ -222,7 +197,7 @@ export default function AdminPage({ user }) {
         customization_charge: response.data.customization_charge ?? '0',
         currency: response.data.currency ?? 'INR',
         validity_days: response.data.validity_days ?? '30',
-        payment_terms: response.data.payment_terms ?? '',
+        payment_terms: response.data.payment_terms || PAYMENT_TERMS,
       })
       setComments('')
       setActionSuccess('')
@@ -233,13 +208,10 @@ export default function AdminPage({ user }) {
     }
   }
 
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
   const handleAction = async (quotationId, action) => {
     setActionLoading(true)
     setActionSuccess('')
     try {
-<<<<<<< HEAD
       const pricing = action === 'Approved' ? {
         quotation_product: quoteForm.quotation_product.trim(),
         unit_price: Number(quoteForm.unit_price),
@@ -251,9 +223,6 @@ export default function AdminPage({ user }) {
         payment_terms: quoteForm.payment_terms.trim(),
       } : {}
       const res = await adminApi.updateQuotation(quotationId, action, comments, pricing)
-=======
-      const res = await adminApi.updateQuotation(quotationId, action, comments)
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
       const updatedQuotation = { ...selected, ...res.data }
       setSelected(updatedQuotation)
       setQuotations(current =>
@@ -267,7 +236,6 @@ export default function AdminPage({ user }) {
       await Promise.all([loadQuotations(activeFilter), loadDashboard()])
     } catch (err) {
       setError(err.response?.data?.detail || `Failed to ${action.toLowerCase()} quotation.`)
-<<<<<<< HEAD
       if (err.response?.status === 502) {
         try {
           const refreshed = await adminApi.getQuotation(quotationId)
@@ -277,14 +245,11 @@ export default function AdminPage({ user }) {
           console.warn('Could not refresh the approved quotation after email delivery failed.', refreshError)
         }
       }
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
     } finally {
       setActionLoading(false)
     }
   }
 
-<<<<<<< HEAD
   const handleResendQuotation = async (quotationId) => {
     setActionLoading(true)
     setError('')
@@ -319,10 +284,7 @@ export default function AdminPage({ user }) {
     && Number(quoteForm.validity_days) <= 365
     && /^[A-Za-z]{3}$/.test(quoteForm.currency.trim())
     && quoteForm.quotation_product.trim().length > 0
-    && quoteForm.payment_terms.trim().length > 0
 
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
   const ACTION_ICONS = {
     LOGIN: '🔑',
     REGISTER: '🆕',
@@ -352,11 +314,7 @@ export default function AdminPage({ user }) {
             className="btn btn-secondary"
             style={{ fontSize: '0.82rem' }}
             disabled={loading}
-<<<<<<< HEAD
             onClick={() => { loadQuotations(activeFilter); loadDashboard(); loadScheduledCalls() }}
-=======
-            onClick={() => { loadQuotations(activeFilter); loadDashboard() }}
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
           >
             ↻ Refresh
           </button>
@@ -382,7 +340,6 @@ export default function AdminPage({ user }) {
         </div>
       )}
 
-<<<<<<< HEAD
       <div className="glass-card fade-in" style={styles.scheduledCallsPanel}>
         <h3 style={styles.logsPanelTitle}>📞 Scheduled Follow-up Calls ({scheduledCalls.length})</h3>
         {scheduledCallsLoading ? (
@@ -422,8 +379,6 @@ export default function AdminPage({ user }) {
         )}
       </div>
 
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
       {/* Activity logs panel */}
       {showLogs && (
         <div className="glass-card fade-in" style={styles.logsPanel}>
@@ -537,7 +492,6 @@ export default function AdminPage({ user }) {
                   ...styles.listItem,
                   ...(selected?.id === q.id ? styles.listItemActive : {}),
                 }}
-<<<<<<< HEAD
                 onClick={() => {
                   setSelected(q)
                   setQuoteForm({
@@ -548,7 +502,7 @@ export default function AdminPage({ user }) {
                     customization_charge: q.customization_charge ?? '0',
                     currency: q.currency ?? 'INR',
                     validity_days: q.validity_days ?? '30',
-                    payment_terms: q.payment_terms ?? '',
+                    payment_terms: q.payment_terms || PAYMENT_TERMS,
                   })
                   setComments('')
                   setActionSuccess('')
@@ -556,9 +510,6 @@ export default function AdminPage({ user }) {
                   setFollowUps([])
                   loadFollowUps(q.id)
                 }}
-=======
-                onClick={() => { setSelected(q); setComments(''); setActionSuccess('') }}
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
               >
                 <div style={styles.listTop}>
                   <div style={{ fontWeight: 700, fontSize: '0.88rem', color: '#f1f5f9' }}>
@@ -571,15 +522,9 @@ export default function AdminPage({ user }) {
                 {q.recommended_product && (
                   <div className="tag" style={{ marginTop: 6, display: 'inline-block' }}>{q.recommended_product}</div>
                 )}
-<<<<<<< HEAD
                 {q.quotation_total != null && (
                   <div style={{ fontSize: '0.78rem', color: '#00c9c8', fontWeight: 600, marginTop: 4 }}>
                     Quote: {q.currency} {Number(q.quotation_total).toFixed(2)}
-=======
-                {q.estimated_price != null && (
-                  <div style={{ fontSize: '0.78rem', color: '#00c9c8', fontWeight: 600, marginTop: 4 }}>
-                    Est. ₹{q.estimated_price}
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
                   </div>
                 )}
                 <div style={{ fontSize: '0.72rem', color: '#475569', marginTop: 4 }}>
@@ -614,10 +559,7 @@ export default function AdminPage({ user }) {
 
               {/* Requirements */}
               <DetailSection title="🔬 Technical Requirements">
-<<<<<<< HEAD
                 <DetailRow label="Requested Quantity" value={selected.quantity} />
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
                 <DetailRow label="Application" value={selected.application} />
                 <DetailRow label="Liquid Type" value={selected.liquid_type} />
                 <DetailRow label="Viscosity" value={selected.viscosity_cp != null ? `${selected.viscosity_cp} cP` : null} />
@@ -628,7 +570,6 @@ export default function AdminPage({ user }) {
                 <DetailRow label="Notes" value={selected.additional_requirements} />
               </DetailSection>
 
-<<<<<<< HEAD
               <DetailSection title="💰 Commercial Quotation">
                 {selected.status === 'Approved' ? (
                   selected.quotation_total != null ? <>
@@ -672,7 +613,6 @@ export default function AdminPage({ user }) {
                         rows={2}
                         value={quoteForm.payment_terms}
                         onChange={event => quotationInput('payment_terms', event.target.value)}
-                        placeholder="Enter payment terms for this quotation"
                       />
                     </div>
                     {quoteTotalPreview !== null && (
@@ -682,14 +622,6 @@ export default function AdminPage({ user }) {
                   </>
                 )}
               </DetailSection>
-=======
-              {/* Pricing */}
-              {selected.estimated_price != null && (
-                <DetailSection title="💰 Pricing">
-                  <DetailRow label="Estimated Price" value={`₹${selected.estimated_price}`} />
-                </DetailSection>
-              )}
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
               {/* Previous review */}
               {selected.reviewed_by && (
@@ -717,11 +649,7 @@ export default function AdminPage({ user }) {
                   <button
                     className="btn"
                     style={styles.approveBtn}
-<<<<<<< HEAD
                     disabled={actionLoading || selected.status === 'Approved' || !canApproveQuote}
-=======
-                    disabled={actionLoading || selected.status === 'Approved'}
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
                     onClick={() => handleAction(selected.id, 'Approved')}
                   >
                     {actionLoading ? <span className="spinner" style={{ width: 14, height: 14 }} /> : '✅'} Approve
@@ -744,7 +672,6 @@ export default function AdminPage({ user }) {
                 </div>
               </div>
 
-<<<<<<< HEAD
               <div style={styles.actionsSection}>
                 <h4 style={styles.actionTitle}>📞 Follow-up Calls</h4>
                 {followUpsLoading ? (
@@ -809,8 +736,6 @@ export default function AdminPage({ user }) {
                 </button>
               </div>
 
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
               <div style={{ fontSize: '0.72rem', color: '#475569', marginTop: 12 }}>
                 Submitted: {formatDate(selected.created_at)}
               </div>
@@ -854,11 +779,7 @@ function DetailSection({ title, children }) {
 }
 
 function DetailRow({ label, value }) {
-<<<<<<< HEAD
   if (value == null || value === '') return null
-=======
-  if (!value) return null
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
   return (
     <div style={{
       display: 'flex', gap: 12, padding: '5px 0',
@@ -870,7 +791,6 @@ function DetailRow({ label, value }) {
   )
 }
 
-<<<<<<< HEAD
 function QuoteInput({ label, value, onChange, maxLength }) {
   const currencyField = label === 'Currency code'
   const textField = currencyField || label === 'Verified product'
@@ -890,8 +810,6 @@ function QuoteInput({ label, value, onChange, maxLength }) {
   )
 }
 
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 const styles = {
   page: { maxWidth: 1400, margin: '0 auto', padding: '28px 20px' },
   header: {
@@ -929,10 +847,7 @@ const styles = {
     gap: 8, flexWrap: 'wrap',
   },
   detail: { padding: '22px 24px', maxHeight: '85vh', overflowY: 'auto' },
-<<<<<<< HEAD
   quoteFields: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '0 12px' },
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
   detailHeader: {
     display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 4,
   },
@@ -962,7 +877,6 @@ const styles = {
   logsPanel: {
     padding: '20px', marginBottom: 24, maxHeight: '50vh', overflowY: 'auto',
   },
-<<<<<<< HEAD
   scheduledCallsPanel: { padding: 20, marginBottom: 24 },
   scheduledCallsList: {
     display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
@@ -980,8 +894,6 @@ const styles = {
   },
   scheduledCallNotes: { color: '#94a3b8', whiteSpace: 'pre-wrap' },
   callPhone: { color: '#00c9c8', textDecoration: 'none' },
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
   logsPanelTitle: {
     fontFamily: 'Outfit, sans-serif', fontSize: '1rem', fontWeight: 700,
     color: '#f1f5f9', marginBottom: 14,

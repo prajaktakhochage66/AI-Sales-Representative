@@ -59,11 +59,8 @@ export default function LoginPage({ onLoginSuccess }) {
         setError(loginType === 'ADMIN' && err.response?.status === 401
           ? 'Incorrect admin username or password. Use the admin credentials configured for this application.'
           : detail)
-<<<<<<< HEAD
       } else if (!err.response) {
         setError('Unable to connect to the server. Please check your connection and try again.')
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
       } else {
         setError(isRegister
           ? 'Registration failed. Try a different username.'

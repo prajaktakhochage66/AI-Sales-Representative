@@ -1,14 +1,8 @@
 # routers/admin.py — Admin endpoints for managing quotations and viewing activity logs
-<<<<<<< HEAD
 import logging
 from datetime import date, datetime, timezone
 from fastapi import APIRouter, HTTPException, Depends, Request
 from pydantic import BaseModel, Field, field_validator
-=======
-from datetime import datetime
-from fastapi import APIRouter, HTTPException, Depends, Request
-from pydantic import BaseModel
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 from typing import Optional, List
 from beanie import PydanticObjectId
 from bson.errors import InvalidId
@@ -18,11 +12,11 @@ from app.models import (
     QuotationRequest,
     User,
     normalize_quotation_status,
-<<<<<<< HEAD
     utc_isoformat,
 )
 from app.auth import get_current_user
 from app.quotation_documents import (
+    PAYMENT_TERMS,
     QuotationEmailDeliveryError,
     email_approved_quotation,
     prepare_quotation_for_approval,
@@ -31,12 +25,6 @@ from app.quotation_documents import (
 
 router = APIRouter(prefix="/api/admin", tags=["Admin"])
 logger = logging.getLogger(__name__)
-=======
-)
-from app.auth import get_current_user
-
-router = APIRouter(prefix="/api/admin", tags=["Admin"])
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
 
 # ── Dependency: require ADMIN role ────────────────────────────────────────────
@@ -50,7 +38,6 @@ async def require_admin(current_user: User = Depends(get_current_user)):
 class QuotationActionRequest(BaseModel):
     action: str  # "Approved" or "Rejected"
     admin_comments: Optional[str] = None
-<<<<<<< HEAD
     quotation_product: Optional[str] = Field(None, min_length=1, max_length=300)
     unit_price: Optional[float] = Field(None, ge=0, le=1000000000000, allow_inf_nan=False)
     tax_rate_percent: Optional[float] = Field(None, ge=0, le=100, allow_inf_nan=False)
@@ -58,14 +45,12 @@ class QuotationActionRequest(BaseModel):
     customization_charge: Optional[float] = Field(None, ge=0, le=1000000000000, allow_inf_nan=False)
     currency: str = Field(default="INR", pattern=r"^[A-Za-z]{3}$")
     validity_days: int = Field(default=30, ge=1, le=365)
-    payment_terms: Optional[str] = Field(None, max_length=2000)
+    payment_terms: str = Field(default=PAYMENT_TERMS, max_length=2000)
 
     @field_validator("currency")
     @classmethod
     def normalize_currency(cls, value: str) -> str:
         return value.upper()
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
 
 class AdminQuotationResponse(BaseModel):
@@ -85,7 +70,6 @@ class AdminQuotationResponse(BaseModel):
     notes: Optional[str]
     status: str
     estimated_price: Optional[float]
-<<<<<<< HEAD
     quantity: int
     quotation_product: Optional[str]
     unit_price: Optional[float]
@@ -102,8 +86,6 @@ class AdminQuotationResponse(BaseModel):
     quotation_valid_until: Optional[date]
     quotation_email_status: Optional[str]
     quotation_email_sent_at: Optional[datetime]
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
     admin_comments: Optional[str]
     reviewed_by: Optional[str]
     reviewed_at: Optional[datetime]
@@ -159,11 +141,7 @@ async def admin_dashboard(admin: User = Depends(require_admin)):
                 "role": a.role,
                 "action": a.action,
                 "details": a.details,
-<<<<<<< HEAD
                 "created_at": utc_isoformat(a.created_at),
-=======
-                "created_at": a.created_at.isoformat(),
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
             }
             for a in recent_activities
         ],
@@ -198,7 +176,6 @@ async def list_all_quotations(
             "notes": q.notes,
             "status": normalize_quotation_status(q.status),
             "estimated_price": q.estimated_price,
-<<<<<<< HEAD
             "quantity": q.quantity,
             "quotation_product": q.quotation_product,
             "unit_price": q.unit_price,
@@ -220,13 +197,6 @@ async def list_all_quotations(
             "reviewed_at": utc_isoformat(q.reviewed_at),
             "created_at": utc_isoformat(q.created_at),
             "updated_at": utc_isoformat(q.updated_at),
-=======
-            "admin_comments": q.admin_comments,
-            "reviewed_by": q.reviewed_by,
-            "reviewed_at": q.reviewed_at.isoformat() if q.reviewed_at else None,
-            "created_at": q.created_at.isoformat(),
-            "updated_at": q.updated_at.isoformat(),
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
         }
         for q in quotations
     ]
@@ -254,7 +224,6 @@ async def update_quotation_status(
     if not quotation:
         raise HTTPException(status_code=404, detail=f"Quotation #{quotation_id} not found")
 
-<<<<<<< HEAD
     pdf_bytes = None
     if data.action == "Approved":
         if quotation.status == "Approved":
@@ -277,8 +246,6 @@ async def update_quotation_status(
         except RuntimeError as error:
             raise HTTPException(status_code=503, detail=str(error)) from error
 
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
     quotation.status = data.action
     response_message = (data.admin_comments or "").strip()
     if data.action in {"Approved", "Rejected"} and not response_message:
@@ -286,13 +253,8 @@ async def update_quotation_status(
     if response_message:
         quotation.admin_comments = response_message
     quotation.reviewed_by = admin.username
-<<<<<<< HEAD
     quotation.reviewed_at = datetime.now(timezone.utc)
     quotation.updated_at = datetime.now(timezone.utc)
-=======
-    quotation.reviewed_at = datetime.utcnow()
-    quotation.updated_at = datetime.utcnow()
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
     await quotation.save()
 
     # Log admin activity
@@ -305,7 +267,6 @@ async def update_quotation_status(
         ip_address=request.client.host if request.client else None,
     ).insert()
 
-<<<<<<< HEAD
     if data.action == "Approved":
         try:
             await email_approved_quotation(quotation, pdf_bytes)
@@ -319,14 +280,11 @@ async def update_quotation_status(
                 ),
             ) from error
 
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
     return {
         "id": str(quotation.id),
         "customer_name": quotation.customer_name,
         "status": quotation.status,
         "admin_comments": quotation.admin_comments,
-<<<<<<< HEAD
         "quantity": quotation.quantity,
         "quotation_product": quotation.quotation_product,
         "unit_price": quotation.unit_price,
@@ -345,10 +303,6 @@ async def update_quotation_status(
         "quotation_email_sent_at": utc_isoformat(quotation.quotation_email_sent_at),
         "reviewed_by": quotation.reviewed_by,
         "reviewed_at": utc_isoformat(quotation.reviewed_at),
-=======
-        "reviewed_by": quotation.reviewed_by,
-        "reviewed_at": quotation.reviewed_at.isoformat() if quotation.reviewed_at else None,
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
         "message": f"Quotation #{quotation_id} has been {data.action.lower()}.",
     }
 
@@ -382,7 +336,6 @@ async def get_quotation_detail(
         "notes": quotation.notes,
         "status": quotation.status,
         "estimated_price": quotation.estimated_price,
-<<<<<<< HEAD
         "quantity": quotation.quantity,
         "quotation_product": quotation.quotation_product,
         "unit_price": quotation.unit_price,
@@ -446,13 +399,6 @@ async def resend_quotation_email(
         "quotation_email_status": quotation.quotation_email_status,
         "quotation_email_sent_at": utc_isoformat(quotation.quotation_email_sent_at),
         "message": f"Quotation #{quotation_id} emailed to {quotation.email}.",
-=======
-        "admin_comments": quotation.admin_comments,
-        "reviewed_by": quotation.reviewed_by,
-        "reviewed_at": quotation.reviewed_at.isoformat() if quotation.reviewed_at else None,
-        "created_at": quotation.created_at.isoformat(),
-        "updated_at": quotation.updated_at.isoformat(),
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
     }
 
 
@@ -472,11 +418,7 @@ async def list_activity_logs(
             "action": log.action,
             "details": log.details,
             "ip_address": log.ip_address,
-<<<<<<< HEAD
             "created_at": utc_isoformat(log.created_at),
-=======
-            "created_at": log.created_at.isoformat(),
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
         }
         for log in logs
     ]

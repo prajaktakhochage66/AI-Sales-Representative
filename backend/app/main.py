@@ -114,14 +114,9 @@ async def startup_event():
         print("  [!] Gemini AI NOT configured - running in demo mode")
         print("  [>] To enable AI: edit backend/.env and add GEMINI_API_KEY")
         print("      Get a free key at: https://aistudio.google.com/app/apikey")
-<<<<<<< HEAD
     if not settings.JWT_SECRET:
         print("  [!] JWT_SECRET is not set; auth tokens will be invalid after a backend restart.")
         print("      Set a persistent JWT_SECRET in backend/.env.")
-=======
-    if not os.getenv("JWT_SECRET"):
-        print("  [!] JWT_SECRET is not set; sessions will expire when the backend restarts.")
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
     print("  [*] API docs: http://localhost:8000/docs")
     print(f"{sep}\n")
     # Initialize Beanie ODM (MongoDB) on startup

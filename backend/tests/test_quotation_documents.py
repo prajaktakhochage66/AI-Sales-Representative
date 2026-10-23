@@ -4,7 +4,9 @@ from unittest.mock import patch
 
 from app.config import settings
 from app.models import QuotationRequest
+from app.routers.admin import QuotationActionRequest
 from app.quotation_documents import (
+    PAYMENT_TERMS,
     _send_email_sync,
     calculate_quotation_totals,
     render_quotation_pdf,
@@ -34,6 +36,17 @@ def make_quotation(**overrides):
 
 
 class QuotationDocumentTests(unittest.TestCase):
+    def test_admin_approval_defaults_payment_terms(self):
+        request = QuotationActionRequest(action="Approved")
+
+        self.assertEqual(request.payment_terms, PAYMENT_TERMS)
+
+    def test_admin_can_change_payment_terms(self):
+        custom_terms = "Full payment before dispatch."
+        request = QuotationActionRequest(action="Approved", payment_terms=custom_terms)
+
+        self.assertEqual(request.payment_terms, custom_terms)
+
     def test_totals_include_quantity_and_tax_on_all_charges(self):
         quotation = make_quotation()
 

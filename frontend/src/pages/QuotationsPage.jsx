@@ -16,18 +16,12 @@ const STATUS_BADGE = {
 
 function formatDate(dateStr) {
   if (!dateStr) return '—'
-<<<<<<< HEAD
   const timestamp = /(?:Z|[+-]\d{2}:\d{2})$/i.test(dateStr) ? dateStr : `${dateStr}Z`
   return new Date(timestamp).toLocaleString('en-IN', {
     day: 'numeric', month: 'short', year: 'numeric',
     hour: '2-digit', minute: '2-digit',
     timeZone: 'Asia/Kolkata',
     timeZoneName: 'short',
-=======
-  return new Date(dateStr).toLocaleDateString('en-IN', {
-    day: 'numeric', month: 'short', year: 'numeric',
-    hour: '2-digit', minute: '2-digit',
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
   })
 }
 
@@ -38,7 +32,6 @@ export default function QuotationsPage() {
   const [selected, setSelected] = useState(null)
   const [showNew, setShowNew] = useState(false)
   const [pendingCount, setPendingCount] = useState(0)
-<<<<<<< HEAD
   const [downloadingQuotationId, setDownloadingQuotationId] = useState(null)
 
   const downloadQuotationPdf = async (quotation) => {
@@ -60,8 +53,6 @@ export default function QuotationsPage() {
       setDownloadingQuotationId(null)
     }
   }
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
   const load = () => {
     setLoading(true)
@@ -83,7 +74,6 @@ export default function QuotationsPage() {
       })
   }
 
-<<<<<<< HEAD
   useEffect(() => {
     load()
     const refreshTimer = window.setInterval(() => {
@@ -102,9 +92,6 @@ export default function QuotationsPage() {
     }, 30000)
     return () => window.clearInterval(refreshTimer)
   }, [])
-=======
-  useEffect(load, [])
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
   return (
     <div style={styles.page}>
@@ -179,7 +166,6 @@ export default function QuotationsPage() {
                 <div style={{ fontSize: '0.78rem', color: '#64748b' }}>{q.company || 'Individual'}</div>
                 <div style={{ fontSize: '0.78rem', color: '#64748b' }}>{q.email}</div>
                 {q.recommended_product && (
-<<<<<<< HEAD
                   <div className="tag" style={{ marginTop: 6, display: 'inline-block' }}>
                     {q.quotation_product || q.recommended_product}
                   </div>
@@ -188,9 +174,6 @@ export default function QuotationsPage() {
                   <div style={{ color: '#00c9c8', fontSize: '0.8rem', fontWeight: 600, marginTop: 5 }}>
                     Quotation: {q.currency} {Number(q.quotation_total).toFixed(2)}
                   </div>
-=======
-                  <div className="tag" style={{ marginTop: 6, display: 'inline-block' }}>{q.recommended_product}</div>
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
                 )}
                 {q.reviewed_by && (
                   <div style={{
@@ -203,7 +186,6 @@ export default function QuotationsPage() {
                     {q.admin_comments && <div style={{ marginTop: 3 }}>{q.admin_comments}</div>}
                   </div>
                 )}
-<<<<<<< HEAD
                 {q.follow_ups?.map(call => (
                   <div key={call.id} style={{
                     marginTop: 8, padding: '8px 10px', borderRadius: 8,
@@ -218,8 +200,6 @@ export default function QuotationsPage() {
                     {call.notes && <div style={{ marginTop: 3 }}>{call.notes}</div>}
                   </div>
                 ))}
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
                 <div style={{ fontSize: '0.72rem', color: '#475569', marginTop: 6 }}>{formatDate(q.created_at)}</div>
               </div>
             ))}
@@ -252,18 +232,14 @@ export default function QuotationsPage() {
 
               {/* Requirements */}
               <Section title="Requirements">
-<<<<<<< HEAD
                 <Row label="Requested Quantity" value={selected.quantity} />
                 <Row label="Quoted Product" value={selected.quotation_product || selected.recommended_product} />
-=======
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
                 <Row label="Application" value={selected.application} />
                 <Row label="Liquid Type" value={selected.liquid_type} />
                 <Row label="Viscosity" value={selected.viscosity_cp != null ? `${selected.viscosity_cp} cP` : null} />
                 <Row label="Flow Rate" value={selected.flow_rate_ml_min != null ? `${selected.flow_rate_ml_min} ml/min` : null} />
                 <Row label="Droplet Size" value={selected.droplet_size_um != null ? `${selected.droplet_size_um} µm` : null} />
                 <Row label="Frequency" value={selected.frequency_khz != null ? `${selected.frequency_khz} kHz` : null} />
-<<<<<<< HEAD
                 <Row label="AI Product Recommendation" value={selected.recommended_product} />
                 <Row label="Additional Notes" value={selected.additional_requirements} />
               </Section>
@@ -307,12 +283,6 @@ export default function QuotationsPage() {
                 </Section>
               )}
 
-=======
-                <Row label="Recommended Product" value={selected.recommended_product} />
-                <Row label="Additional Notes" value={selected.additional_requirements} />
-              </Section>
-
->>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
               {selected.reviewed_by && (
                 <div
                   className={`alert ${selected.status === 'Approved' ? 'alert-success' : selected.status === 'Rejected' ? 'alert-error' : 'alert-warning'}`}
