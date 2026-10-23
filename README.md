@@ -202,14 +202,16 @@ The frontend will be available at: http://localhost:5173
 8. Chat responses stream as Gemini generates them and use the complete product catalogue.
 
 Quotation requests are stored for admin review. Configure `SMTP_HOST`,
-`SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, and `SMTP_FROM_EMAIL` in
-`backend/.env` to enable Gmail SMTP delivery. Use a newly generated Gmail app
-password and keep it only in the ignored `.env` file. Approvals require complete
-commercial details and configured email delivery. If a delivery attempt fails
-after approval, the customer can still download the PDF and an admin can retry
-email delivery from the quotation panel. Customers can include a preferred
-callback time in their quotation requirements; admins can schedule a follow-up
-call from the quotation review panel.
+`SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, and `SMTP_FROM_EMAIL` in the
+backend environment; for Gmail, use an App Password instead of your regular
+account password. Render Free blocks outbound SMTP ports, so SMTP delivery
+requires a hosting plan/provider that permits outbound connections on port 465
+or 587. Keep credentials out of Git. Approvals require complete commercial
+details and configured email delivery. If delivery fails after approval, the
+customer can still download the PDF and an admin can retry email delivery from
+the quotation panel. Customers can include a preferred callback time in their
+quotation requirements; admins can schedule a follow-up call from the quotation
+review panel.
 
 ---
 

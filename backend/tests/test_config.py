@@ -76,6 +76,5 @@ class SettingsTests(unittest.TestCase):
         self.assertEqual(settings.SMTP_USERNAME, "process@example.invalid")
         self.assertEqual(settings.SMTP_PASSWORD, "process-password")
 
-
 if __name__ == "__main__":
     unittest.main()
