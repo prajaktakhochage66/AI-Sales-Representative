@@ -94,7 +94,7 @@ export default function QuotationsPage() {
   }, [])
 
   return (
-    <div style={styles.page}>
+    <div style={styles.page} className="responsive-page responsive-page--quotations">
       <div style={styles.pageHeader}>
         <div>
           <h1 style={styles.title}>My Quotation Requests</h1>
@@ -144,7 +144,7 @@ export default function QuotationsPage() {
 
       {/* List + Detail split */}
       {!loading && quotations.length > 0 && (
-        <div style={styles.layout}>
+        <div style={styles.layout} className="responsive-quotation-layout">
           {/* List */}
           <div style={styles.list}>
             {quotations.map(q => (
@@ -207,7 +207,7 @@ export default function QuotationsPage() {
 
           {/* Detail Panel */}
           {selected ? (
-            <div className="glass-card" style={styles.detail}>
+            <div className="glass-card responsive-detail-panel" style={styles.detail}>
               <div style={styles.detailHeader}>
                 <div>
                   <h2 style={{ fontFamily: 'Outfit, sans-serif', fontSize: '1.1rem', fontWeight: 700 }}>
@@ -318,13 +318,13 @@ export default function QuotationsPage() {
 
       {/* New Quotation Modal */}
       {showNew && (
-        <div style={styles.overlay} onClick={e => e.target === e.currentTarget && setShowNew(false)}>
-          <div className="glass-card fade-in" style={styles.modal}>
+        <div className="responsive-modal-overlay" style={styles.overlay} onClick={e => e.target === e.currentTarget && setShowNew(false)}>
+          <div className="glass-card fade-in responsive-modal" style={styles.modal}>
             <div style={styles.modalHeader}>
               <h2 style={{ fontFamily: 'Outfit, sans-serif', fontSize: '1.1rem', fontWeight: 700 }}>New Quotation Request</h2>
               <button style={styles.closeBtn} onClick={() => setShowNew(false)}>✕</button>
             </div>
-            <div style={{ overflowY: 'auto', padding: 20 }}>
+            <div className="responsive-modal-body" style={{ overflowY: 'auto', padding: 20 }}>
               <QuotationForm
                 onSuccess={() => { load(); setTimeout(() => setShowNew(false), 3500) }}
                 onCancel={() => setShowNew(false)}
@@ -351,7 +351,7 @@ function Section({ title, children }) {
 function Row({ label, value }) {
   if (!value) return null
   return (
-    <div style={{ display: 'flex', gap: 12, padding: '5px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+    <div className="responsive-detail-row" style={{ display: 'flex', gap: 12, padding: '5px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
       <span style={{ fontSize: '0.78rem', color: '#64748b', minWidth: 140, flexShrink: 0 }}>{label}</span>
       <span style={{ fontSize: '0.85rem', color: '#cbd5e1', wordBreak: 'break-word' }}>{value}</span>
     </div>

@@ -62,7 +62,7 @@ export default function CataloguePage() {
   }
 
   return (
-    <div style={styles.page}>
+    <div style={styles.page} className="responsive-page responsive-page--catalogue">
       <h1 style={styles.title}>Product Catalogue</h1>
       <p style={styles.subtitle}>
         Ultrasonic spray nozzle systems from WaveNxD Technologies.
@@ -171,7 +171,7 @@ export default function CataloguePage() {
         </div>
       )}
       {!loading && (
-        <div style={styles.grid}>
+        <div style={styles.grid} className="responsive-product-grid">
           {filtered.map(p => (
             <ProductCard key={p.id} product={p} onGetQuote={handleGetQuote} />
           ))}
@@ -197,13 +197,13 @@ export default function CataloguePage() {
 
       {/* ── Quote Modal ──────────────────────────────────────────────────── */}
       {showQuote && (
-        <div style={styles.overlay} onClick={e => e.target === e.currentTarget && setShowQuote(false)}>
-          <div className="glass-card fade-in" style={styles.modal}>
+        <div className="responsive-modal-overlay" style={styles.overlay} onClick={e => e.target === e.currentTarget && setShowQuote(false)}>
+          <div className="glass-card fade-in responsive-modal" style={styles.modal}>
             <div style={styles.modalHeader}>
               <h2 style={styles.modalTitle}>📋 Request Quotation</h2>
               <button style={styles.closeBtn} onClick={() => setShowQuote(false)}>✕</button>
             </div>
-            <div style={{ overflowY: 'auto', padding: 20 }}>
+            <div className="responsive-modal-body" style={{ overflowY: 'auto', padding: 20 }}>
               <QuotationForm
                 prefilledProduct={selectedProduct}
                 onSuccess={() => setTimeout(() => setShowQuote(false), 4000)}

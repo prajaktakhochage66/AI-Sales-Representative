@@ -8,10 +8,10 @@ export default function ChatPage() {
   const [quotationProduct, setQuotationProduct] = useState(null)
 
   return (
-    <div style={styles.page}>
-      <div style={styles.layout}>
+    <div style={styles.page} className="responsive-page responsive-page--chat">
+      <div style={styles.layout} className="responsive-chat-layout">
         {/* ── Chat Panel ───────────────────────────────────────────────── */}
-        <div className="glass-card" style={styles.chatPanel}>
+        <div className="glass-card responsive-chat-panel" style={styles.chatPanel}>
           <ChatWindow
             onRequestQuote={product => {
               setQuotationProduct(product)
@@ -77,13 +77,13 @@ export default function ChatPage() {
 
       {/* ── Quotation Modal ───────────────────────────────────────────────── */}
       {showQuotation && (
-        <div style={styles.overlay} onClick={e => e.target === e.currentTarget && setShowQuotation(false)}>
-          <div className="glass-card fade-in" style={styles.modal}>
+        <div className="responsive-modal-overlay" style={styles.overlay} onClick={e => e.target === e.currentTarget && setShowQuotation(false)}>
+          <div className="glass-card fade-in responsive-modal" style={styles.modal}>
             <div style={styles.modalHeader}>
               <h2 style={styles.modalTitle}>📋 Request a Quotation</h2>
               <button style={styles.closeBtn} onClick={() => setShowQuotation(false)}>✕</button>
             </div>
-            <div style={styles.modalBody}>
+            <div className="responsive-modal-body" style={styles.modalBody}>
               <QuotationForm
                 prefilledProduct={quotationProduct}
                 onSuccess={() => setTimeout(() => setShowQuotation(false), 4000)}

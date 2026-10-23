@@ -377,10 +377,272 @@ a:hover {
   padding: 0 20px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 960px) {
   .hide-mobile { display: none !important; }
 }
 
-@media (min-width: 769px) {
+@media (min-width: 961px) {
   .hide-desktop { display: none !important; }
+}
+
+/* Responsive page layouts */
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 320px;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.responsive-page {
+  width: 100%;
+  min-width: 0;
+}
+
+.responsive-page > *,
+.responsive-page * {
+  min-width: 0;
+}
+
+.responsive-product-grid {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)) !important;
+}
+
+.responsive-logs-panel {
+  min-width: 0;
+}
+
+.responsive-logs-table {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+.responsive-detail-row {
+  min-width: 0;
+}
+
+.responsive-detail-row > :last-child {
+  overflow-wrap: anywhere;
+}
+
+.responsive-modal-overlay {
+  padding: 20px;
+}
+
+@media (max-width: 960px) {
+  .responsive-navbar-inner {
+    padding-inline: 16px !important;
+  }
+
+  .responsive-page--chat {
+    height: auto !important;
+    min-height: calc(100dvh - 64px);
+    padding: 18px 16px !important;
+  }
+
+  .responsive-chat-layout {
+    grid-template-columns: minmax(0, 1fr) !important;
+    flex: initial !important;
+  }
+
+  .responsive-chat-panel {
+    min-height: min(68dvh, 680px);
+  }
+
+  .responsive-page--chat .responsive-chat-layout > :last-child {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+  }
+
+  .responsive-page--chat .responsive-chat-layout > :last-child > button {
+    grid-column: 1 / -1;
+  }
+
+  .responsive-admin-layout,
+  .responsive-quotation-layout {
+    grid-template-columns: minmax(0, 1fr) !important;
+    align-items: start;
+  }
+
+  .responsive-admin-layout > :first-child,
+  .responsive-quotation-layout > :first-child {
+    max-height: 42dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .responsive-admin-layout .responsive-detail-panel,
+  .responsive-quotation-layout .responsive-detail-panel {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .responsive-logs-table > div {
+    min-width: 760px;
+  }
+
+  .responsive-page--admin > :first-child,
+  .responsive-page--quotations > :first-child {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 640px) {
+  .responsive-navbar-inner {
+    height: 58px !important;
+    padding-inline: 12px !important;
+  }
+
+  .responsive-page--home,
+  .responsive-page--login,
+  .responsive-page--catalogue,
+  .responsive-page--quotations,
+  .responsive-page--admin {
+    padding: 20px 14px !important;
+  }
+
+  .responsive-page--home h1,
+  .responsive-page--catalogue h1,
+  .responsive-page--quotations h1,
+  .responsive-page--admin h1 {
+    font-size: clamp(1.55rem, 7vw, 2.15rem) !important;
+    overflow-wrap: anywhere;
+  }
+
+  .responsive-page--home .glass-card,
+  .responsive-page--catalogue .glass-card,
+  .responsive-page--quotations .glass-card,
+  .responsive-page--admin .glass-card {
+    border-radius: 16px;
+  }
+
+  .responsive-page--login {
+    padding: 20px 14px !important;
+  }
+
+  .responsive-login-card {
+    padding: 24px 18px !important;
+  }
+
+  .responsive-page--chat {
+    padding: 12px 10px !important;
+  }
+
+  .responsive-chat-panel {
+    min-height: 62dvh;
+    border-radius: 16px;
+  }
+
+  .responsive-chat-window > :first-child {
+    padding: 12px !important;
+  }
+
+  .responsive-chat-window > :nth-child(2) {
+    padding: 12px 10px !important;
+  }
+
+  .responsive-chat-window > :last-child {
+    padding: 8px 10px !important;
+  }
+
+  .responsive-chat-window button {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .responsive-page--chat .responsive-chat-layout > :last-child {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .responsive-page--chat .responsive-chat-layout > :last-child > button {
+    grid-column: auto;
+  }
+
+  .responsive-product-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .responsive-product-card {
+    padding: 18px !important;
+  }
+
+  .responsive-product-card h3 {
+    overflow-wrap: anywhere;
+  }
+
+  .responsive-product-card .divider + p {
+    overflow-wrap: anywhere;
+  }
+
+  .responsive-page--quotations .responsive-quotation-layout > :first-child,
+  .responsive-page--admin .responsive-admin-layout > :first-child {
+    max-height: 38dvh;
+  }
+
+  .responsive-page--quotations .responsive-detail-row,
+  .responsive-page--admin .responsive-detail-row {
+    flex-wrap: wrap;
+    gap: 4px !important;
+  }
+
+  .responsive-page--quotations .responsive-detail-row > :first-child,
+  .responsive-page--admin .responsive-detail-row > :first-child {
+    min-width: 100% !important;
+  }
+
+  .responsive-page--admin > :first-child > :last-child {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .responsive-page--admin > :first-child > :last-child > button {
+    flex: 1 1 140px;
+  }
+
+  .responsive-modal-overlay {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+
+  .responsive-modal {
+    width: 100% !important;
+    max-width: none !important;
+    max-height: calc(94dvh + env(safe-area-inset-bottom)) !important;
+    margin: 0 !important;
+    border-radius: 20px 20px 0 0 !important;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .responsive-modal-body {
+    padding: 16px !important;
+  }
+
+  .responsive-logs-table > div {
+    min-width: 700px;
+  }
+
+  .responsive-detail-row {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 380px) {
+  .responsive-navbar-inner {
+    padding-inline: 8px !important;
+  }
+
+  .responsive-page--quotations > :first-child,
+  .responsive-page--admin > :first-child {
+    align-items: flex-start;
+  }
+
+  .responsive-chat-window input,
+  .responsive-chat-window textarea {
+    font-size: 16px !important;
+  }
 }

@@ -92,7 +92,7 @@ export default function LoginPage({ onLoginSuccess }) {
   }
 
   return (
-    <div style={styles.page}>
+    <div style={styles.page} className="responsive-page responsive-page--login">
       {/* Background decoration */}
       <div style={styles.bgOrb1} />
       <div style={styles.bgOrb2} />
@@ -109,7 +109,7 @@ export default function LoginPage({ onLoginSuccess }) {
         </div>
 
         {/* Login card */}
-        <div className="glass-card fade-in" style={styles.card}>
+        <div className="glass-card fade-in responsive-login-card" style={styles.card}>
           <div style={styles.loginTypeTabs} role="tablist" aria-label="Choose account type">
             {[
               { id: 'USER', label: '👤 User Login' },

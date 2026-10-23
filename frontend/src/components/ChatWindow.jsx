@@ -112,7 +112,7 @@ export default function ChatWindow({ onRequestQuote }) {
   }
 
   return (
-    <div style={styles.wrap}>
+    <div style={styles.wrap} className="responsive-chat-window">
       {/* Header */}
       <div style={styles.header}>
         <div style={styles.avatar}>🤖</div>

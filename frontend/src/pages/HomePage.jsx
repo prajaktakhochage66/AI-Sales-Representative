@@ -31,7 +31,7 @@ export default function HomePage({ onNavigate }) {
   ]
 
   return (
-    <div style={styles.page}>
+    <div style={styles.page} className="responsive-page responsive-page--home">
       {/* ── Hero ───────────────────────────────────────────────────────────── */}
       <section style={styles.hero}>
         <div style={styles.heroBadge}>🇮🇳 Made in India · Kolhapur, Maharashtra</div>

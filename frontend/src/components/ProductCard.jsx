@@ -11,7 +11,7 @@ export default function ProductCard({ product, onGetQuote }) {
   const cat = categoryColors[product.category] || categoryColors['Standard']
 
   return (
-    <div className="glass-card fade-in" style={styles.card}>
+    <div className="glass-card fade-in responsive-product-card" style={styles.card}>
       {/* Header */}
       <div style={styles.header}>
         <div style={styles.headerLeft}>

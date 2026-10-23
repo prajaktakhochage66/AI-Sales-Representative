@@ -17,7 +17,7 @@ export default function Navbar({ activePage, onNavigate, user, onLogout }) {
 
   return (
     <nav style={styles.nav}>
-      <div style={styles.inner}>
+      <div style={styles.inner} className="responsive-navbar-inner">
         {/* Logo */}
         <button style={styles.logo} onClick={() => onNavigate('home')}>
           <span style={styles.logoIcon}>〜</span>

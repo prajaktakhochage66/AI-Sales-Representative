@@ -298,7 +298,7 @@ export default function AdminPage({ user }) {
   }
 
   return (
-    <div style={styles.page}>
+    <div style={styles.page} className="responsive-page responsive-page--admin">
       {/* Page header */}
       <div style={styles.header}>
         <div>
@@ -381,7 +381,7 @@ export default function AdminPage({ user }) {
 
       {/* Activity logs panel */}
       {showLogs && (
-        <div className="glass-card fade-in" style={styles.logsPanel}>
+        <div className="glass-card fade-in responsive-logs-panel" style={styles.logsPanel}>
           <h3 style={styles.logsPanelTitle}>📊 Recent Activity Logs</h3>
           {logsLoading ? (
             <div style={styles.center}>
@@ -391,7 +391,7 @@ export default function AdminPage({ user }) {
           ) : activityLogs.length === 0 ? (
             <p style={{ color: '#64748b', textAlign: 'center', padding: 20 }}>No activity logs yet.</p>
           ) : (
-            <div style={styles.logsTable}>
+            <div style={styles.logsTable} className="responsive-logs-table">
               <div style={styles.logsHeader}>
                 <span style={styles.logsHeaderCell}>Time</span>
                 <span style={styles.logsHeaderCell}>User</span>
@@ -477,7 +477,7 @@ export default function AdminPage({ user }) {
           </p>
         </div>
       ) : (
-        <div style={styles.layout}>
+        <div style={styles.layout} className="responsive-admin-layout">
           {/* Quotation list */}
           <div style={styles.list}>
             {quotations.length === 0 ? (
@@ -536,7 +536,7 @@ export default function AdminPage({ user }) {
 
           {/* Detail panel */}
           {selected ? (
-            <div className="glass-card slide-in" style={styles.detail}>
+            <div className="glass-card slide-in responsive-detail-panel" style={styles.detail}>
               <div style={styles.detailHeader}>
                 <div>
                   <h2 style={{ fontFamily: 'Outfit, sans-serif', fontSize: '1.1rem', fontWeight: 700 }}>
@@ -767,7 +767,7 @@ function StatCard({ icon, label, value, color }) {
 function DetailSection({ title, children }) {
   return (
     <div style={{ marginBottom: 16 }}>
-      <div style={{
+      <div className="responsive-detail-row" style={{
         fontSize: '0.78rem', color: '#64748b', fontWeight: 600,
         textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8,
       }}>
