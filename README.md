@@ -62,6 +62,11 @@ Internship_Project_Nexaprime/
 | AI         | Google Gemini API (google-genai)|
 | HTTP       | Axios (frontend → backend)      |
 
+The backend's Render runtime is pinned to Python 3.12.10 in
+`backend/.python-version`. When deploying with `backend` as the Render service's
+Root Directory, commit this file so Render uses the compatible Python runtime
+instead of its default version.
+
 ---
 
 ## ✅ Prerequisites
