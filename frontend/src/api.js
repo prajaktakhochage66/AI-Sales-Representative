@@ -12,6 +12,7 @@ export function getToken() {
   return sessionStorage.getItem('wavenxd_token')
 }
 
+
 export function setToken(token) {
   sessionStorage.setItem('wavenxd_token', token)
   clearLegacyAuth()
