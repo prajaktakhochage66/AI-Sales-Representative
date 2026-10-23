@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from datetime import date, datetime, timezone
+=======
+from datetime import datetime
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 from typing import Optional
 
 from beanie import Document, Indexed
@@ -8,6 +12,7 @@ from pydantic import Field
 QUOTATION_STATUSES = ("Pending", "In Review", "Quoted", "Approved", "Rejected", "Closed")
 
 
+<<<<<<< HEAD
 def utc_isoformat(value: Optional[datetime]) -> Optional[str]:
     if value is None:
         return None
@@ -16,6 +21,8 @@ def utc_isoformat(value: Optional[datetime]) -> Optional[str]:
     return value.astimezone(timezone.utc).isoformat()
 
 
+=======
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 def normalize_quotation_status(status: str) -> str:
     normalized_status = status.strip().casefold()
     return next(
@@ -41,6 +48,7 @@ class QuotationRequest(Document):
     status: str = Field(default="Pending")
     user_id: Optional[str] = None  # reference to User.id
     estimated_price: Optional[float] = None
+<<<<<<< HEAD
     quantity: int = Field(default=1, ge=1)
     quotation_product: Optional[str] = None
     unit_price: Optional[float] = None
@@ -57,6 +65,8 @@ class QuotationRequest(Document):
     quotation_valid_until: Optional[date] = None
     quotation_email_status: Optional[str] = None
     quotation_email_sent_at: Optional[datetime] = None
+=======
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
     technical_status: Optional[str] = None
     technical_comments: Optional[str] = None
     reviewed_by: Optional[str] = None

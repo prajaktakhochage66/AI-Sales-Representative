@@ -26,7 +26,10 @@ Internship_Project_Nexaprime/
 │   │   ├── database.py      ← Motor + Beanie MongoDB setup
 │   │   ├── models.py        ← Database models
 │   │   ├── schemas.py       ← Pydantic request/response models
+<<<<<<< HEAD
 │   │   ├── quotation_documents.py ← PDF quotation and email delivery
+=======
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 │   │   ├── products.py      ← Product catalogue data
 │   │   ├── ai_service.py    ← Gemini AI integration
 │   │   ├── recommender.py   ← Product recommendation logic
@@ -97,7 +100,11 @@ You need a free Google Gemini API key to enable AI features.
 2. Replace `PASTE_YOUR_API_KEY_HERE` with the key you copied:
    ```
    GEMINI_API_KEY=AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+<<<<<<< HEAD
    GEMINI_MODEL=gemini-3.5-flash
+=======
+   GEMINI_MODEL=gemini-2.0-flash
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
    ```
 3. Save the file (Ctrl+S)
 
@@ -142,6 +149,7 @@ Copy `backend/.env.example` to `backend/.env` and configure `MONGODB_URI` and
 `DB_NAME` for your MongoDB database. Before starting the backend for the first
 time, set `ADMIN_USERNAME` and `ADMIN_PASSWORD` in `backend/.env`; the backend
 creates that admin account in MongoDB if no admin account exists yet. Use a
+<<<<<<< HEAD
 strong password of at least 8 characters. Replace the `JWT_SECRET` placeholder
 with a persistent random value; generate one with
 `python -c "import secrets; print(secrets.token_urlsafe(48))"`. Keep this value
@@ -167,6 +175,18 @@ Quotation review times and scheduled follow-up call times are displayed in
 Indian Standard Time (IST). Users can view call schedules and notes in their
 quotation requests; admins can see scheduled calls with customer contact
 details in the Admin Panel.
+=======
+strong password of at least 8 characters. Set `JWT_SECRET` to a long random
+value as well. If an admin account already exists, set `ADMIN_USERNAME` to
+that existing admin's username to synchronize its password from the environment.
+
+Users can create an account from the login page or sign in with an existing
+account. After login, users can submit quotation requests and see only their
+own requests and their review status. Admins can open **Admin Panel** to see
+all pending quotation requests, review the request details, approve or reject
+them, add comments, and inspect activity logs. User registrations, successful
+logins, quotation submissions, and admin decisions are recorded in MongoDB.
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
 ### Terminal 2 — Frontend
 
@@ -192,6 +212,7 @@ The frontend will be available at: http://localhost:5173
 3. Click **"Chat with AI"** to open the chatbot
 4. Type a message like: *"Hello, tell me about your products"*
 5. Try switching to Hindi: *"नमस्ते, आपके उत्पाद बताइए"*
+<<<<<<< HEAD
 6. Create a user account or sign in, then use **"Request Quotation"** to submit a request
 7. Sign in as the configured admin to review requests in **Admin Panel**
 8. Chat responses stream as Gemini generates them and use the complete product catalogue.
@@ -205,6 +226,10 @@ after approval, the customer can still download the PDF and an admin can retry
 email delivery from the quotation panel. Customers can include a preferred
 callback time in their quotation requirements; admins can schedule a follow-up
 call from the quotation review panel.
+=======
+6. Create a user account or sign in, then use **"Get Quote"** to submit a request
+7. Sign in as the configured admin to approve/reject pending requests in **Admin Panel**
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
 ---
 
@@ -224,7 +249,11 @@ call from the quotation review panel.
 ## 🔒 Security — Keeping Secrets Safe
 
 - The `backend/.env` file is listed in `.gitignore` — it will NOT be committed to GitHub
+<<<<<<< HEAD
 - Never paste API keys or app passwords into chat, email, or source code files
+=======
+- Never paste your API key into chat, email, or source code files
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 - The `backend/.env.example` file contains only placeholders and is safe to share
 - The API key is only used on the backend server — it is never sent to the browser
 

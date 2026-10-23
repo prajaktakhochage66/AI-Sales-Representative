@@ -2,12 +2,17 @@
 routers/quotations.py — Quotation request API endpoints.
 """
 
+<<<<<<< HEAD
 from datetime import datetime, timezone
 import logging
+=======
+from datetime import datetime
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 from typing import List
 
 from beanie import PydanticObjectId
 from bson.errors import InvalidId
+<<<<<<< HEAD
 from fastapi import APIRouter, Depends, HTTPException, Response
 
 from app.auth import get_current_user, require_role
@@ -21,6 +26,15 @@ from app.quotation_documents import (
 
 router = APIRouter(prefix="/api/quotations", tags=["Quotations"])
 logger = logging.getLogger(__name__)
+=======
+from fastapi import APIRouter, Depends, HTTPException
+
+from app.auth import get_current_user, require_role
+from app.models import ActivityLog, QuotationRequest, User, normalize_quotation_status
+from app.schemas import QuotationCreate, QuotationResponse
+
+router = APIRouter(prefix="/api/quotations", tags=["Quotations"])
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
 
 def calculate_estimate(data: QuotationCreate) -> float:
@@ -40,6 +54,7 @@ async def pending_count(current_user: User = Depends(get_current_user)):
     return {"count": await QuotationRequest.find(query).count()}
 
 
+<<<<<<< HEAD
 async def quotation_responses_with_followups(quotations: List[QuotationRequest]) -> List[dict]:
     quotation_ids = [str(quotation.id) for quotation in quotations]
     followups = await FollowUp.find(
@@ -57,6 +72,8 @@ async def quotation_responses_with_followups(quotations: List[QuotationRequest])
     return responses
 
 
+=======
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 @router.post("/", response_model=QuotationResponse, status_code=201, summary="Submit a quotation request")
 async def create_quotation(data: QuotationCreate, user: User = Depends(get_current_user)):
     quotation = QuotationRequest(**data.model_dump())
@@ -83,7 +100,11 @@ async def list_quotations(current_user: User = Depends(get_current_user)):
     quotations = await query.sort("-created_at").to_list()
     for quotation in quotations:
         quotation.status = normalize_quotation_status(quotation.status)
+<<<<<<< HEAD
     return await quotation_responses_with_followups(quotations)
+=======
+    return quotations
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
 
 @router.get("/{quotation_id}", response_model=QuotationResponse, summary="Get a quotation request")
@@ -97,6 +118,7 @@ async def get_quotation(quotation_id: str, current_user: User = Depends(get_curr
     ):
         raise HTTPException(status_code=404, detail=f"Quotation #{quotation_id} not found")
     quotation.status = normalize_quotation_status(quotation.status)
+<<<<<<< HEAD
     return (await quotation_responses_with_followups([quotation]))[0]
 
 
@@ -125,6 +147,9 @@ async def download_quotation_pdf(
         media_type="application/pdf",
         headers={"Content-Disposition": f'attachment; filename="WaveNxD-Quotation-{quotation.id}.pdf"'},
     )
+=======
+    return quotation
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
 
 @router.patch("/{quotation_id}/status", response_model=QuotationResponse, summary="Update quotation status")
@@ -145,6 +170,7 @@ async def update_status(
         quotation = None
     if not quotation:
         raise HTTPException(status_code=404, detail=f"Quotation #{quotation_id} not found")
+<<<<<<< HEAD
     pdf_bytes = None
     if status == "Approved":
         if quotation.status == "Approved":
@@ -159,6 +185,12 @@ async def update_status(
     quotation.reviewed_by = admin.username
     quotation.reviewed_at = datetime.now(timezone.utc)
     quotation.updated_at = datetime.now(timezone.utc)
+=======
+    quotation.status = status
+    quotation.reviewed_by = admin.username
+    quotation.reviewed_at = datetime.utcnow()
+    quotation.updated_at = datetime.utcnow()
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
     await quotation.save()
     await ActivityLog(
         user_id=str(admin.id),
@@ -167,6 +199,7 @@ async def update_status(
         action=f"{status.upper().replace(' ', '_')}_QUOTATION",
         details=f"Quotation #{quotation_id} status changed to {status}",
     ).insert()
+<<<<<<< HEAD
     if status == "Approved":
         try:
             await email_approved_quotation(quotation, pdf_bytes)
@@ -179,4 +212,6 @@ async def update_status(
                     "The PDF is available in the customer's dashboard; retry email from the admin panel."
                 ),
             ) from error
+=======
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
     return quotation

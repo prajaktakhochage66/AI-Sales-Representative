@@ -3,6 +3,10 @@ Provides password hashing, JWT creation/verification, and authenticated-user
 and role-checking dependencies for the Beanie user model.
 """
 
+<<<<<<< HEAD
+=======
+import os
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 import secrets
 from datetime import datetime, timedelta
 from typing import Optional
@@ -12,10 +16,16 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
+<<<<<<< HEAD
 from .config import settings
 from .models import User
 
 SECRET_KEY = settings.JWT_SECRET or secrets.token_urlsafe(32)
+=======
+from .models import User
+
+SECRET_KEY = os.getenv("JWT_SECRET") or secrets.token_urlsafe(32)
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 

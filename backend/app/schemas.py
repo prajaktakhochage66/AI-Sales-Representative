@@ -2,11 +2,18 @@
 schemas.py — Pydantic request/response validation models.
 """
 
+<<<<<<< HEAD
 from datetime import date, datetime
 from typing import Optional, List
 from pydantic import BaseModel, EmailStr, Field, field_serializer
 from beanie import PydanticObjectId
 from app.models import utc_isoformat
+=======
+from datetime import datetime
+from typing import Optional, List
+from pydantic import BaseModel, EmailStr, Field
+from beanie import PydanticObjectId
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
 # ── Auth ──────────────────────────────────────────────────────────────────────
 
@@ -80,6 +87,7 @@ class QuotationCreate(BaseModel):
     additional_requirements: Optional[str] = None
     recommended_product: Optional[str] = Field(None, max_length=300)
     notes: Optional[str] = None
+<<<<<<< HEAD
     quantity: int = Field(default=1, ge=1, le=1000000)
 
 
@@ -106,6 +114,8 @@ class FollowUpResponse(BaseModel):
     @field_serializer("follow_up_date", "created_at")
     def serialize_timestamps(self, value: Optional[datetime]) -> Optional[str]:
         return utc_isoformat(value)
+=======
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
 
 class QuotationResponse(BaseModel):
@@ -125,6 +135,7 @@ class QuotationResponse(BaseModel):
     notes: Optional[str]
     status: str
     estimated_price: Optional[float] = None
+<<<<<<< HEAD
     quantity: int = 1
     quotation_product: Optional[str] = None
     unit_price: Optional[float] = None
@@ -141,18 +152,48 @@ class QuotationResponse(BaseModel):
     quotation_valid_until: Optional[date] = None
     quotation_email_status: Optional[str] = None
     quotation_email_sent_at: Optional[datetime] = None
+=======
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
     admin_comments: Optional[str] = None
     reviewed_by: Optional[str] = None
     reviewed_at: Optional[datetime] = None
     created_at: datetime
+<<<<<<< HEAD
     follow_ups: List[FollowUpResponse] = Field(default_factory=list)
+=======
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
     class Config:
         from_attributes = True
 
+<<<<<<< HEAD
     @field_serializer("reviewed_at", "created_at", "quotation_issued_at", "quotation_email_sent_at")
     def serialize_timestamps(self, value: Optional[datetime]) -> Optional[str]:
         return utc_isoformat(value)
+=======
+
+# ── Follow-up ─────────────────────────────────────────────────────────────────
+
+class FollowUpCreate(BaseModel):
+    quotation_id: str
+    action_taken: Optional[str] = None
+    notes: Optional[str] = None
+    follow_up_date: Optional[datetime] = None
+    status: str = "Scheduled"
+
+
+class FollowUpResponse(BaseModel):
+    id: str
+    quotation_id: str
+    action_taken: Optional[str]
+    notes: Optional[str]
+    follow_up_date: Optional[datetime]
+    status: str
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
 
 # ── Recommendation ────────────────────────────────────────────────────────────

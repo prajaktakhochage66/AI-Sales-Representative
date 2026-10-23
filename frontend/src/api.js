@@ -8,6 +8,7 @@ const api = axios.create({
 })
 
 export function getToken() {
+<<<<<<< HEAD
   migrateLegacyAuth()
   return sessionStorage.getItem('wavenxd_token')
 }
@@ -26,11 +27,28 @@ export function removeToken() {
 export function getStoredUser() {
   migrateLegacyAuth()
   const raw = sessionStorage.getItem('wavenxd_user')
+=======
+  return localStorage.getItem('wavenxd_token')
+}
+
+export function setToken(token) {
+  localStorage.setItem('wavenxd_token', token)
+}
+
+export function removeToken() {
+  localStorage.removeItem('wavenxd_token')
+  localStorage.removeItem('wavenxd_user')
+}
+
+export function getStoredUser() {
+  const raw = localStorage.getItem('wavenxd_user')
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
   if (!raw) return null
   try { return JSON.parse(raw) } catch { return null }
 }
 
 export function setStoredUser(user) {
+<<<<<<< HEAD
   sessionStorage.setItem('wavenxd_user', JSON.stringify(user))
   clearLegacyAuth()
 }
@@ -51,6 +69,9 @@ function migrateLegacyAuth() {
 function clearLegacyAuth() {
   localStorage.removeItem('wavenxd_token')
   localStorage.removeItem('wavenxd_user')
+=======
+  localStorage.setItem('wavenxd_user', JSON.stringify(user))
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 }
 
 api.interceptors.request.use((config) => {
@@ -65,11 +86,15 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
+<<<<<<< HEAD
       const hadToken = Boolean(getToken())
       removeToken()
       if (hadToken && typeof window !== 'undefined') {
         window.dispatchEvent(new Event('wavenxd:unauthorized'))
       }
+=======
+      removeToken()
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
     }
     return Promise.reject(error)
   }
@@ -87,6 +112,7 @@ export const chatApi = {
   newSession: () => api.get('/chat/new-session'),
   send: (session_id, message, history) =>
     api.post('/chat/', { session_id, message, history }),
+<<<<<<< HEAD
   stream: async (session_id, message, history, onChunk) => {
     const headers = { 'Content-Type': 'application/json' }
     const token = getToken()
@@ -137,6 +163,8 @@ export const chatApi = {
 
     return { ai_available: aiAvailable, error: errorMessage }
   },
+=======
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 }
 
 export const productsApi = {
@@ -149,18 +177,24 @@ export const quotationsApi = {
   create: (data) => api.post('/quotations/', data),
   list: () => api.get('/quotations/'),
   get: (id) => api.get(`/quotations/${id}`),
+<<<<<<< HEAD
   downloadPdf: (id) => api.get(`/quotations/${id}/pdf`, { responseType: 'blob' }),
+=======
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
   updateStatus: (id, status) =>
     api.patch(`/quotations/${id}/status?status=${encodeURIComponent(status)}`),
   pendingCount: () => api.get('/quotations/pending-count'),
 }
 
+<<<<<<< HEAD
 export const followupsApi = {
   create: (data) => api.post('/followups/', data),
   forQuotation: (quotationId) => api.get(`/followups/quotation/${quotationId}`),
   allForAdmin: () => api.get('/followups/admin/all'),
 }
 
+=======
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 export const adminApi = {
   dashboard: () => api.get('/admin/dashboard'),
   listQuotations: (statusFilter) => {
@@ -168,9 +202,14 @@ export const adminApi = {
     return api.get(`/admin/quotations${params}`)
   },
   getQuotation: (id) => api.get(`/admin/quotations/${id}`),
+<<<<<<< HEAD
   updateQuotation: (id, action, admin_comments, pricing = {}) =>
     api.patch(`/admin/quotations/${id}`, { action, admin_comments, ...pricing }),
   resendQuotationEmail: (id) => api.post(`/admin/quotations/${id}/send-email`),
+=======
+  updateQuotation: (id, action, admin_comments) =>
+    api.patch(`/admin/quotations/${id}`, { action, admin_comments }),
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
   activityLogs: (limit = 50) => api.get(`/admin/activity-logs?limit=${limit}`),
 }
 

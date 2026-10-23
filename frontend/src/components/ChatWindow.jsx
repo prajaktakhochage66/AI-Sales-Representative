@@ -1,6 +1,10 @@
 // ChatWindow.jsx — Multi-turn AI chatbot with history
 import { useState, useRef, useEffect } from 'react'
+<<<<<<< HEAD
 import { chatApi, productsApi, statusApi } from '../api'
+=======
+import { chatApi } from '../api'
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 import ReactMarkdown from 'react-markdown'
 
 // Generate a simple UUID-like ID
@@ -16,8 +20,12 @@ const SUGGESTED_QUESTIONS = [
 ]
 
 export default function ChatWindow({ onRequestQuote }) {
+<<<<<<< HEAD
   const [sessionId, setSessionId] = useState(() => uuid())
   const [catalogue, setCatalogue] = useState([])
+=======
+  const [sessionId] = useState(() => uuid())
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
   const [messages, setMessages] = useState([
     {
       role: 'model',
@@ -33,7 +41,11 @@ export default function ChatWindow({ onRequestQuote }) {
   ])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
+<<<<<<< HEAD
   const [aiAvailable, setAiAvailable] = useState(null)
+=======
+  const [aiAvailable, setAiAvailable] = useState(true)
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
   const bottomRef = useRef(null)
   const inputRef = useRef(null)
 
@@ -42,6 +54,7 @@ export default function ChatWindow({ onRequestQuote }) {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, loading])
 
+<<<<<<< HEAD
   useEffect(() => {
     statusApi.get()
       .then(response => setAiAvailable(Boolean(response.data.ai_available)))
@@ -51,20 +64,33 @@ export default function ChatWindow({ onRequestQuote }) {
       .catch(error => console.warn('Could not load the product catalogue for chat quotations.', error))
   }, [])
 
+=======
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
   const sendMessage = async (text = input.trim()) => {
     if (!text || loading) return
 
     const userMsg = { role: 'user', content: text }
+<<<<<<< HEAD
     setMessages([...messages, userMsg, { role: 'model', content: '' }])
+=======
+    const newMessages = [...messages, userMsg]
+    setMessages(newMessages)
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
     setInput('')
     setLoading(true)
 
     try {
+<<<<<<< HEAD
       const history = messages.slice(1).filter(m => m.content).map(m => ({
+=======
+      // Build history (exclude the first welcome message which is fake)
+      const history = messages.slice(1).map(m => ({
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
         role: m.role,
         content: m.content,
       }))
 
+<<<<<<< HEAD
       const result = await chatApi.stream(sessionId, text, history, (chunk, replace = false) => {
         setMessages(current => current.map((message, index) =>
           index === current.length - 1
@@ -88,12 +114,23 @@ export default function ChatWindow({ onRequestQuote }) {
           : message
       ))
       setAiAvailable(false)
+=======
+      const res = await chatApi.send(sessionId, text, history)
+      setAiAvailable(res.data.ai_available)
+      setMessages(prev => [...prev, { role: 'model', content: res.data.reply }])
+    } catch (err) {
+      const errMsg = err.response?.status === 0 || !err.response
+        ? '⚠️ Cannot reach the backend server. Please ensure the backend is running on port 8000.'
+        : `⚠️ Error: ${err.response?.data?.detail || 'Something went wrong. Please try again.'}`
+      setMessages(prev => [...prev, { role: 'model', content: errMsg }])
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
     } finally {
       setLoading(false)
       inputRef.current?.focus()
     }
   }
 
+<<<<<<< HEAD
   const requestQuotation = () => {
     const latestReply = [...messages].reverse().find(message => message.role === 'model')?.content || ''
     const lowerReply = latestReply.toLowerCase()
@@ -104,6 +141,8 @@ export default function ChatWindow({ onRequestQuote }) {
     onRequestQuote?.(recommendedProduct ? { name: recommendedProduct.name } : null)
   }
 
+=======
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
@@ -123,19 +162,32 @@ export default function ChatWindow({ onRequestQuote }) {
               ...styles.statusDot,
               background: aiAvailable ? '#10b981' : '#f59e0b',
             }} />
+<<<<<<< HEAD
             {aiAvailable === null ? 'Connecting…' : aiAvailable ? 'Live AI' : 'AI Unavailable'}
           </div>
         </div>
         {aiAvailable === false && (
           <div className="badge badge-demo" style={{ marginLeft: 'auto' }}>
             ⚠️ AI Unavailable
+=======
+            {aiAvailable ? 'Live AI' : 'Demo Mode'}
+          </div>
+        </div>
+        {!aiAvailable && (
+          <div className="badge badge-demo" style={{ marginLeft: 'auto' }}>
+            ⚠️ API Key Missing
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
           </div>
         )}
       </div>
 
       {/* Messages */}
       <div style={styles.messages}>
+<<<<<<< HEAD
         {messages.filter(msg => msg.content).map((msg, i) => (
+=======
+        {messages.map((msg, i) => (
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
           <MessageBubble key={i} msg={msg} />
         ))}
 
@@ -173,7 +225,11 @@ export default function ChatWindow({ onRequestQuote }) {
         <button
           className="btn btn-secondary"
           style={{ fontSize: '0.78rem' }}
+<<<<<<< HEAD
           onClick={requestQuotation}
+=======
+          onClick={() => onRequestQuote && onRequestQuote()}
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
         >
           📋 Request Quotation
         </button>
@@ -182,7 +238,11 @@ export default function ChatWindow({ onRequestQuote }) {
           style={{ fontSize: '0.78rem' }}
           onClick={() => {
             setMessages([messages[0]])
+<<<<<<< HEAD
             setSessionId(uuid())
+=======
+            setAiAvailable(true)
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
           }}
         >
           🔄 New Chat
@@ -212,12 +272,21 @@ export default function ChatWindow({ onRequestQuote }) {
         </button>
       </div>
 
+<<<<<<< HEAD
       {aiAvailable === false && (
         <div className="alert alert-warning" style={{ fontSize: '0.78rem', padding: '8px 12px' }}>
           <span>⚠️</span>
           <span>
             Live AI is unavailable. Check the Gemini API key and model configured in{' '}
             <code>backend/.env</code>, then restart the backend.
+=======
+      {!aiAvailable && (
+        <div className="alert alert-warning" style={{ fontSize: '0.78rem', padding: '8px 12px' }}>
+          <span>⚠️</span>
+          <span>
+            Demo mode active. Configure <code>GEMINI_API_KEY</code> in{' '}
+            <code>backend/.env</code> and restart the server for live AI.
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
           </span>
         </div>
       )}

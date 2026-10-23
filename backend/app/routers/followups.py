@@ -7,7 +7,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from beanie import PydanticObjectId
 from bson.errors import InvalidId
 from app.auth import require_role
+<<<<<<< HEAD
 from app.models import FollowUp, QuotationRequest, utc_isoformat
+=======
+from app.models import FollowUp, QuotationRequest
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 from app.schemas import FollowUpCreate, FollowUpResponse
 from app.models import User
 
@@ -48,6 +52,7 @@ async def get_followups_for_quotation(
 async def list_followups(admin: User = Depends(require_role("ADMIN"))):
     """Returns all follow-up records."""
     return await FollowUp.find_all().sort("-created_at").to_list()
+<<<<<<< HEAD
 
 
 @router.get("/admin/all", summary="List follow-ups with quotation contact details")
@@ -80,3 +85,5 @@ async def list_admin_followups(admin: User = Depends(require_role("ADMIN"))):
             "application": quotation.application,
         })
     return results
+=======
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8

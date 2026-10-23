@@ -12,12 +12,16 @@ export default function ChatPage() {
       <div style={styles.layout}>
         {/* ── Chat Panel ───────────────────────────────────────────────── */}
         <div className="glass-card" style={styles.chatPanel}>
+<<<<<<< HEAD
           <ChatWindow
             onRequestQuote={product => {
               setQuotationProduct(product)
               setShowQuotation(true)
             }}
           />
+=======
+          <ChatWindow onRequestQuote={() => setShowQuotation(true)} />
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
         </div>
 
         {/* ── Sidebar ──────────────────────────────────────────────────── */}

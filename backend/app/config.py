@@ -6,12 +6,17 @@ Uses python-dotenv to load variables from backend/.env
 
 import os
 import sys
+<<<<<<< HEAD
 from dotenv import dotenv_values, load_dotenv
+=======
+from dotenv import load_dotenv
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
 # Load the .env file from the backend directory
 import pathlib
 env_path = pathlib.Path(__file__).resolve().parents[1] / ".env"
 load_dotenv(dotenv_path=env_path)
+<<<<<<< HEAD
 dotenv_settings = dotenv_values(dotenv_path=env_path)
 
 
@@ -21,6 +26,8 @@ def _get_env_value(key: str, default: str = "") -> str:
     if value:
         return value
     return (dotenv_settings.get(key) or default).strip()
+=======
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
 
 def get_required_env(key: str) -> str:
@@ -49,6 +56,7 @@ def get_optional_env(key: str, default: str) -> str:
 
 class Settings:
     GEMINI_API_KEY: str = ""
+<<<<<<< HEAD
     GEMINI_MODEL: str = "gemini-3.5-flash"
     API_KEY_CONFIGURED: bool = False
     JWT_SECRET: str = ""
@@ -57,6 +65,10 @@ class Settings:
     SMTP_USERNAME: str = ""
     SMTP_PASSWORD: str = ""
     SMTP_FROM_EMAIL: str = ""
+=======
+    GEMINI_MODEL: str = "gemini-2.0-flash"
+    API_KEY_CONFIGURED: bool = False
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
     def __init__(self):
         raw_key = os.getenv("GEMINI_API_KEY", "").strip()
@@ -67,6 +79,7 @@ class Settings:
             self.GEMINI_API_KEY = ""
             self.API_KEY_CONFIGURED = False
 
+<<<<<<< HEAD
         self.GEMINI_MODEL = get_optional_env("GEMINI_MODEL", "gemini-3.5-flash")
         self.JWT_SECRET = _get_env_value("JWT_SECRET")
         self.SMTP_HOST = _get_env_value("SMTP_HOST", "smtp.gmail.com")
@@ -88,6 +101,9 @@ class Settings:
             and not password_is_placeholder
             and self.SMTP_FROM_EMAIL
         )
+=======
+        self.GEMINI_MODEL = get_optional_env("GEMINI_MODEL", "gemini-3.8-flash")
+>>>>>>> 171b31ee03ffb6b8eba4c25febe1f1542b3422b8
 
 
 settings = Settings()
